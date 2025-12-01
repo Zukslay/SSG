@@ -3,7 +3,7 @@ from textnode import TextType
 
 
 def main():
-    node = textnode.TextNode("some anchor text", TextType.LINK, "https://www.boot.dev")
+    node = textnode.TextNode("This is a text node", TextType.BOLD, "https://www.boot.dev")
     print(node)
 
 
