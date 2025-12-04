@@ -1,10 +1,10 @@
 import textnode
-from textnode import TextType
+from functions_directory import copy_static_to_public
 
 
 def main():
-    node = textnode.TextNode("This is a text node", TextType.BOLD, "https://www.boot.dev")
-    print(node)
+    copy_static_to_public()
+    
 
 
 
