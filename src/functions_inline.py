@@ -41,7 +41,6 @@ def split_nodes_image(old_nodes):
     for node in old_nodes:
         text = node.text
         image_sec = extract_markdown_images(text)
-        print(image_sec)
         
         if not image_sec and text:
             new_list.append(node)

@@ -26,6 +26,7 @@ class TagType(Enum):
     ITALIC = "i"
     LINK = "a"
     IMAGE = "img"
+    CODE = "```"
 
 class LeafNode(HTMLNode):
 
