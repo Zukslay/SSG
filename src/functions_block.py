@@ -23,10 +23,10 @@ def markdown_to_blocks(text):
 
 def block_to_block_type(blocky):
     block = blocky.strip()
-
+    
     if bool(re.match(r"^#{1,6} ", block)):
         return BlockType.HEADING
-    elif bool(re.match(r"^`{3} ",block)):
+    elif bool(re.match(r"^```",block)) and bool(re.search(r"```\s*$", block)):
         return BlockType.CODE
     elif bool(re.match(r"^>", block)):
         return BlockType.QUOTE
@@ -67,8 +67,8 @@ def cleaner(text, type):
         return re.sub(r"^#{1,6} ", "", text)
     
     elif type == BlockType.CODE:
-        lines = text.split("\n")
-        return "\n".join(lines[1:-1])
+        lines = text.split("\n")[1:-1]
+        return "\n".join(lines) + "\n"
         
     
     elif type == BlockType.QUOTE:
@@ -79,7 +79,7 @@ def cleaner(text, type):
         return "\n".join(strip_list)
 
     elif type == BlockType.PARAGRAPH:
-        return text
+        return " ".join(text.split("\n"))
 
     elif type == BlockType.ORDERED_LIST:
         lines = text.split("\n")
@@ -144,5 +144,5 @@ def markdown_to_html_node(markdown):
         
         html_nodes.append(htmlnod)
         
-    return HTMLNode("div",children=html_nodes)
+    return ParentNode("div",children=html_nodes)
     
