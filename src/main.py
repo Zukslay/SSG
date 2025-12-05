@@ -1,23 +1,19 @@
 import os
-from functions_directory import copy_static_to_public, generate_page
+import sys
+from functions_directory import generate_page_recursive, copy_static_to_public
 
 
 def main():
+    basepath = sys.argv[1]
+    if not basepath:
+        basepath = "/"
+
     copy_static_to_public()
     current_dir = os.path.dirname(os.path.abspath("SSG"))
-    contents = ["content/index.md",
-                 "content/blog/glorfindel/index.md",
-                 "content/blog/majesty/index.md",
-                 "content/blog/tom/index.md",
-                 "content/contact/index.md"]
-    paths = []
-    html_template = os.path.join(current_dir, "template.html")
-    for content in contents:
-        cont = os.path.join(current_dir, content)
-        paths.append([cont, html_template, cont.replace("content", "public").replace(".md", ".html")])
+    content_dir = os.path.join(current_dir, "content")
+    docs_dir = os.path.join(current_dir, "docs")
     
-    for path in paths:
-        generate_page(path[0], path[1], path[2])
+    generate_page_recursive(content_dir, docs_dir, basepath)
 
 
 

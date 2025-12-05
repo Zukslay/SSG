@@ -21,7 +21,6 @@ def copy_static_to_public():
     static_path = os.path.join(current_dir, "static")
     public_path = os.path.join(current_dir, "public")
     
-
     if not os.path.exists(static_path):
         raise Exception("static directory doesn't exists")
     
@@ -43,7 +42,7 @@ def extract_title(md):
     else:
         raise Exception("no header <h1>")
     
-def generate_page(from_path, template_path, dest_path):
+def generate_page(from_path, template_path, dest_path, base_path):
     print(f"Generating page from {from_path} to {dest_path} using {template_path}")
     
     md_content = None
@@ -62,6 +61,8 @@ def generate_page(from_path, template_path, dest_path):
 
     temp_content = temp_content.replace("{{ Title }}", md_title)
     temp_content = temp_content.replace("{{ Content }}", md_to_html)
+    temp_content = temp_content.replace('href="/', f'href="{base_path}')
+    temp_content = temp_content.replace('src="/', f'src="{base_path}')
     
     dest_dir = os.path.dirname(dest_path)
     if not os.path.exists(dest_dir):
@@ -69,3 +70,22 @@ def generate_page(from_path, template_path, dest_path):
 
     with open(dest_path, "w") as f:
         f.write(temp_content)
+
+def generate_page_recursive(content, public, base_path):
+    current_dir = os.path.dirname(os.path.abspath("SSG"))
+    template_path = os.path.join(current_dir, "template.html")
+
+    if not os.path.exists(content):
+        raise Exception("content directory doesn't exists")
+    
+    for dir_or_file in os.listdir(content):
+        sub_path = os.path.join(content, dir_or_file)
+
+        if os.path.isfile(sub_path):
+            sub_content_path = os.path.join(public, dir_or_file.replace(".md", ".html"))
+            generate_page(sub_path, template_path , sub_content_path, base_path)
+            continue
+        elif os.path.isdir(sub_path):
+            sub_content_path = os.path.join(public, dir_or_file)
+            generate_page_recursive(sub_path, sub_content_path, base_path)
+    
