@@ -16,24 +16,24 @@ def recursive_path(path, copy_path):
             os.mkdir(sub_path_copy)
             recursive_path(sub_path, sub_path_copy)
 
-def copy_static_to_public():
+def copy_static_to_docs():
     current_dir = os.path.dirname(os.path.abspath("SSG"))
     static_path = os.path.join(current_dir, "static")
-    public_path = os.path.join(current_dir, "public")
+    docs_path = os.path.join(current_dir, "docs")
     
     if not os.path.exists(static_path):
         raise Exception("static directory doesn't exists")
     
-    if os.path.exists(public_path):
-        shutil.rmtree(public_path)
-        os.mkdir(public_path)
+    if os.path.exists(docs_path):
+        shutil.rmtree(docs_path)
+        os.mkdir(docs_path)
     else:
-        os.mkdir(public_path)
+        os.mkdir(docs_path)
     
-    recursive_path(static_path, public_path)
+    recursive_path(static_path, docs_path)
         
 
-    return public_path
+    return docs_path
 
 def extract_title(md):
     h1_header = md.split("\n\n")[0]
