@@ -146,3 +146,6 @@ def markdown_to_html_node(markdown):
         
     return ParentNode("div",children=html_nodes)
     
+def converter(md):
+    node = markdown_to_html_node(md)
+    return node.to_html()
